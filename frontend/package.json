@@ -1,0 +1,32 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "tw:build": "tailwindcss build src/styles.css -o public/styles.css",
+    "start": "react-scripts start"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2",
+    "react-scripts": "^5.0.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
