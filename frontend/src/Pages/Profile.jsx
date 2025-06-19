@@ -13,7 +13,7 @@ const Profile = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.get("http://localhost:5000/api/books/mybooks", {
+      const res = await axios.get("https://bookswap-mi28.onrender.com/api/books/mybooks", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
