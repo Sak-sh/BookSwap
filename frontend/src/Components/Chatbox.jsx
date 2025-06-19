@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 
-const SOCKET_SERVER_URL = "https://bookswap-1-frontend.onrender.com";
+const SOCKET_SERVER_URL = "https://bookswap-mi28.onrender.com";
 
 const ChatPage = () => {
   const { userId: chatPartnerId } = useParams(); // The ID of the other user in the chat
