@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
+const BACKEND_URL = "https://bookswap-mi28.onrender.com"; // <-- Put your backend URL here
+
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,12 +24,13 @@ const Navbar = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("/api/chat/owners", {
+        const res = await axios.get(`${BACKEND_URL}/api/chat/owners`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setOwners(res.data.owners);
+        setOwners(res.data.owners || []);
       } catch (error) {
         console.error("Error fetching owners:", error);
+        setOwners([]);
       }
     };
 
@@ -78,17 +81,19 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Dynamic chat links for owners who sent you requests */}
+            {/* Dynamic chat links */}
             {owners.length > 0 ? (
-              owners.map((ownerId) => (
-                <NavLink
-                  key={ownerId}
-                  to={`/chat/${ownerId}`}
-                  className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}
-                >
-                  Chat with Owner {ownerId.slice(0, 6)}
-                </NavLink>
-              ))
+              owners.map((ownerId) =>
+                ownerId ? (
+                  <NavLink
+                    key={ownerId}
+                    to={`/chat/${ownerId}`}
+                    className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}
+                  >
+                    Chat with Owner {ownerId.slice(0, 6)}
+                  </NavLink>
+                ) : null
+              )
             ) : (
               <NavLink to="/chat" className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}>
                 Chat
