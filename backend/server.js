@@ -18,13 +18,17 @@ const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
     origin: ["https://bookswap-1-frontend.onrender.com"],
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+     credentials: true
   }
 });
 
 setupSocket(io);
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://bookswap-1-frontend.onrender.com"],
+  credentials: true
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI , {
