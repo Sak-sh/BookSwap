@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: "*",
+    origin: ["https://bookswap-1-frontend.onrender.com"],
     methods: ["GET", "POST"]
   }
 });
@@ -27,7 +27,7 @@ setupSocket(io);
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/bookswap", {
+mongoose.connect(process.env.MONGO_URI  {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -39,5 +39,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/swap", swapRequestRoutes);
 app.use("/api/protected", protectRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
