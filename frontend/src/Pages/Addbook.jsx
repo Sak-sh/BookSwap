@@ -17,7 +17,7 @@ const Addbook = () => {
 
       const token = localStorage.getItem("token"); // get token from storage
 
-      const res = await axios.post("http://localhost:5000/api/books", newBook, {
+      const res = await axios.post("https://bookswap-mi28.onrender.com/api/books", newBook, {
         headers: {
           Authorization: `Bearer ${token}`, // pass token to backend
         },
