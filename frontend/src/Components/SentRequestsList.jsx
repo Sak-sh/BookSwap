@@ -12,7 +12,7 @@ const SentRequestsList = () => {
     const fetchSentRequests = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/swap/sent", {
+        const res = await axios.get("https://bookswap-mi28.onrender.com/api/swap/sent", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRequests(res.data);
