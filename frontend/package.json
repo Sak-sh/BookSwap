@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "tw:build": "tailwindcss build src/styles.css -o public/styles.css",
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
