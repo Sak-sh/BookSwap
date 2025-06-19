@@ -19,7 +19,7 @@ const io = socketio(server, {
   cors: {
     origin: ["https://bookswap-1-frontend.onrender.com"],
     methods: ["GET", "POST"],
-     credentials: true
+   
   }
 });
 
