@@ -17,7 +17,7 @@ const RequestsList = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:5000/api/swap/incoming", {
+      const res = await axios.get("https://bookswap-1-frontend.onrender.com/api/swap/incoming", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRequests(res.data);
