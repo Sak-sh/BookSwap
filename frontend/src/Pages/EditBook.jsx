@@ -15,7 +15,7 @@ const EditBook = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/books/${id}`);
+        const res = await axios.get(`https://bookswap-mi28.onrender.com/api/books/${id}`);
         const { title, author, description, image } = res.data;
         setTitle(title);
         setAuthor(author);
