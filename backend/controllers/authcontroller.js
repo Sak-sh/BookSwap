@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000"; // React app URL
+const CLIENT_URL = process.env.CLIENT_URL || "https://bookswap-1-frontend.onrender.com"; // React app URL
 
 // Setup nodemailer transporter (adjust with your SMTP)
 const transporter = nodemailer.createTransport({
