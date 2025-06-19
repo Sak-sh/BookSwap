@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/protected-route";
+const API_URL = "https://bookswap-mi28.onrender.com/api/protected-route";
 
 const getToken = () => localStorage.getItem("token");
 
