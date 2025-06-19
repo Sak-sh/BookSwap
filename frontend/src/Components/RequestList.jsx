@@ -17,7 +17,7 @@ const RequestsList = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/swap/incoming", {
+      const res = await axios.get("https://bookswap-mi28.onrender.com/api/swap/incoming", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRequests(res.data);
