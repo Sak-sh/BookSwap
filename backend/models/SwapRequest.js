@@ -1,25 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const swapRequestSchema = new mongoose.Schema({
-  book: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Book",
-    required: true,
-  },
-  sender: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  receiver: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },     // requester
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },      // book owner
+  book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true },       // requested book
+  status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' },
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("SwapRequest", swapRequestSchema);
+module.exports = mongoose.model('SwapRequest', swapRequestSchema);

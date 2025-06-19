@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./Components/Navbar";
+import SentRequestsList from './Components/SentRequestsList'; // adjust the path accordingly
 import Home from "./Pages/Home";
 import Addbook from "./Pages/Addbook";
 import Bookdetails from "./Pages/Bookdetails";
@@ -93,14 +94,15 @@ function App() {
           }
         />
         <Route
-          path="/chat/:userId"
-          element={
-            <PrivateRoute>
-              <Chatbox />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/books/:id" element={<Bookdetails />} />
+  path="/chat/:userId"
+  element={
+    <PrivateRoute>
+      <Chatbox />
+    </PrivateRoute>
+  }
+/>
+
+
 <Route path="/browsebook/update/:id" element={<EditBook />} />
 <Route path="/profile" element={<Profile />} />
 
@@ -122,6 +124,11 @@ function App() {
             </PrivateRoute>
           }
         />
+       
+  {/* your existing routes */}
+  <Route path="/sent-requests" element={<SentRequestsList />} />
+
+
       </Routes>
     </Router>
   );

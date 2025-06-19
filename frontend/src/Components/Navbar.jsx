@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -8,22 +9,30 @@ const Navbar = () => {
 
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("token")));
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [owners, setOwners] = useState([]);
 
   useEffect(() => {
     setLoggedIn(Boolean(localStorage.getItem("token")));
-    setShowProfileDropdown(false); // close dropdown on route change
+    setShowProfileDropdown(false);
   }, [location.pathname]);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setShowProfileDropdown(false);
+    const fetchOwners = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await axios.get("/api/chat/owners", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setOwners(res.data.owners);
+      } catch (error) {
+        console.error("Error fetching owners:", error);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (loggedIn) fetchOwners();
+  }, [loggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -49,36 +58,43 @@ const Navbar = () => {
 
         {loggedIn && (
           <>
-            {/* Clickable Dropdown Menu */}
             <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setShowProfileDropdown((prev) => !prev)}
-                className="focus:outline-none"
-              >
+              <button onClick={() => setShowProfileDropdown((prev) => !prev)} className="focus:outline-none">
                 Profile ▼
               </button>
 
               {showProfileDropdown && (
                 <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded shadow-md z-50">
-                  <NavLink
-                    to="/profile"
-                    className="block px-4 py-2 hover:bg-blue-200"
-                  >
+                  <NavLink to="/profile" className="block px-4 py-2 hover:bg-blue-200">
                     My Profile
                   </NavLink>
-                  <NavLink
-                    to="/requestlist"
-                    className="block px-4 py-2 hover:bg-blue-200"
-                  >
-                    Request List
+                  <NavLink to="/requestlist" className="block px-4 py-2 hover:bg-blue-200">
+                    Incoming Request List
+                  </NavLink>
+                  <NavLink to="/sent-requests" className="block px-4 py-2 hover:bg-blue-200">
+                    My Sent Requests
                   </NavLink>
                 </div>
               )}
             </div>
 
-            <NavLink to="/chat/123" className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}>
-              Chat
-            </NavLink>
+            {/* Dynamic chat links for owners who sent you requests */}
+            {owners.length > 0 ? (
+              owners.map((ownerId) => (
+                <NavLink
+                  key={ownerId}
+                  to={`/chat/${ownerId}`}
+                  className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}
+                >
+                  Chat with Owner {ownerId.slice(0, 6)}
+                </NavLink>
+              ))
+            ) : (
+              <NavLink to="/chat" className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}>
+                Chat
+              </NavLink>
+            )}
+
             <NavLink to="/browsebook" className={({ isActive }) => (isActive ? "underline font-semibold" : "block")}>
               Browse Books
             </NavLink>

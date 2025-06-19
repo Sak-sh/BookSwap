@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 // Swap Button Component
 const RequestSwapButton = ({ bookId, ownerId }) => {
@@ -14,7 +14,7 @@ const RequestSwapButton = ({ bookId, ownerId }) => {
     if (token) {
       try {
         const decoded = JSON.parse(atob(token.split(".")[1]));
-        setCurrentUserId(decoded.id || decoded._id); // Use _id if your payload has that
+        setCurrentUserId(decoded.id || decoded._id);
       } catch (e) {
         console.error("Invalid token", e);
       }
@@ -68,9 +68,24 @@ const RequestSwapButton = ({ bookId, ownerId }) => {
 
 const Bookdetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        setCurrentUserId(decoded.id || decoded._id);
+      } catch (e) {
+        console.error("Invalid token", e);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -87,11 +102,40 @@ const Bookdetails = () => {
     fetchBook();
   }, [id]);
 
+  const ownerId = book?.owner?._id || book?.owner;
+
+  const initiateChat = async (otherUserId) => {
+    if (!currentUserId) {
+      alert("Please log in to chat.");
+      return;
+    }
+    if (currentUserId === otherUserId) {
+      alert("This is your own book.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `http://localhost:5000/api/chat/start/${otherUserId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // ✅ Navigate to chat page with that user
+      navigate(`/chat/${otherUserId}`);
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to initiate chat");
+    }
+  };
+
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p className="text-red-600">{error}</p>;
   if (!book) return <p>Book not found.</p>;
-
-  const ownerId = book.owner?._id || book.owner;
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow mt-8">
@@ -108,6 +152,8 @@ const Bookdetails = () => {
 
       <div className="mt-6 flex space-x-4 items-center">
         <RequestSwapButton bookId={book._id} ownerId={ownerId} />
+
+        
 
         <Link
           to="/browsebook"
