@@ -22,7 +22,7 @@ const Navbar = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("/api/chat/owners", {
+        const res = await axios.get("https://bookswap-mi28.onrender.com/api/chat/owners", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOwners(res.data.owners);
