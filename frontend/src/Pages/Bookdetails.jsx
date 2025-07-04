@@ -90,7 +90,7 @@ const Bookdetails = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/books/${id}`);
+        const res = await axios.get(`https://bookswap-mi28.onrender.com/api/books/${id}`);
         setBook(res.data);
       } catch (err) {
         setError("Failed to fetch book details");
@@ -117,7 +117,7 @@ const Bookdetails = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        `http://localhost:5000/api/chat/start/${otherUserId}`,
+        `https://bookswap-mi28.onrender.com/api/chat/start/${otherUserId}`,
         {},
         {
           headers: {
